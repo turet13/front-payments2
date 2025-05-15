@@ -1,21 +1,320 @@
+/* Definición de colores principales para fácil mantenimiento */
+:host {
+  --institucional-green: rgb(0, 117, 56);
+  --institucional-green-darker: rgb(0, 80, 38);
+  --accent-color: rgb(0, 123, 255); /* Azul para acento */
+  --accent-color-darker: rgb(0, 90, 200);
+  --text-color-on-primary: white;
+  --text-color-on-accent: white;
+  --link-color: var(--institucional-green);
+  --border-color-soft: #e0e0e0;
+  --background-grey-soft: #f0f2f5;
+}
+
+/* Estructura general del contenedor principal */
 .sidenav-container {
   height: 100%;
 }
 
 .sidenav {
-  width: 200px;
+  width: 230px;
+  box-shadow: 3px 0px 6px rgba(0,0,0,0.1);
 }
 
-.sidenav .mat-toolbar {
-  background: inherit;
+/* Toolbar del Sidenav */
+.sidenav .sidenav-toolbar {
+  background-color: var(--institucional-green);
+  color: var(--text-color-on-primary);
+  span {
+    margin-left: 16px;
+  }
 }
 
-.mat-toolbar.mat-primary {
+/* Enlaces del Sidenav */
+.sidenav a[mat-list-item] {
+  color: #333;
+  border-left: 4px solid transparent;
+  transition: background-color 0.3s ease, border-left-color 0.3s ease;
+}
+.sidenav a[mat-list-item]:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+.sidenav a[mat-list-item].active-link {
+  color: var(--institucional-green);
+  font-weight: bold;
+  border-left-color: var(--institucional-green);
+  background-color: rgba(0, 117, 56, 0.05);
+}
+
+/* Estilo del toolbar superior principal */
+.main-toolbar.mat-primary {
   position: sticky;
   top: 0;
-  z-index: 1;
+  z-index: 1000; /* Asegurar que esté sobre otros elementos */
+  background-color: var(--institucional-green) !important;
+  color: var(--text-color-on-primary) !important;
 }
 
-mat-toolbar{
-  background: rgb(0, 117, 56);
+/* Contenedor general de la sección de pagos */
+.payment-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 2rem;
+  background-color: var(--background-grey-soft);
+  min-height: calc(100vh - 64px); /* 64px es la altura típica del toolbar */
+  box-sizing: border-box;
+}
+
+.payment-card {
+  width: 100%;
+  max-width: 900px;
+  padding: 2rem 2.5rem; /* Más padding horizontal */
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+}
+
+/* Encabezado con logo y RUT */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color-soft);
+  padding-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
+
+  img {
+    height: 50px; // Ajusta según el tamaño de tu logo Erizcafe
+  }
+  .rut-change-link {
+    color: var(--link-color);
+    text-decoration: none;
+    font-weight: 500;
+    &:hover {
+      text-decoration: underline;
+      color: var(--institucional-green-darker);
+    }
+  }
+}
+
+/* Cuerpo con servicios y medios de pago */
+.card-body {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem 3rem; /* Más gap horizontal */
+
+  .left,
+  .right {
+    flex: 1 1 40%; /* Ajuste para que no se estiren tanto si solo hay 2 columnas */
+    min-width: 300px;
+  }
+
+  h3 {
+    margin-top: 0;
+    margin-bottom: 1.2rem; /* Un poco más de espacio bajo el título */
+    color: #333;
+    font-size: 1.1rem;
+  }
+}
+
+mat-checkbox {
+  display: block; /* Para que cada checkbox ocupe su línea y tenga buen espaciado */
+  margin-bottom: 0.75rem;
+}
+
+.detalle {
+  font-size: 0.875rem;
+  color: #555;
+  margin-left: 2rem; /* Indentado bajo un checkbox */
+  margin-bottom: 1rem;
+}
+
+.email-field {
+  width: 100%;
+  margin-top: 1.5rem;
+}
+
+/* Medios de pago */
+.medios-pago {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 0.5rem; /* Ajustado para alinearse mejor con el título */
+  align-items: center;
+}
+
+.payment-logo-button {
+  background-color: #ffffff;
+  border: 2px solid var(--border-color-soft); /* Borde un poco más grueso */
+  border-radius: 8px;
+  padding: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 140px;
+  height: 60px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+
+  &:hover {
+    border-color: var(--institucional-green);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+  }
+
+  &.selected { /* Estilo para cuando el botón está seleccionado */
+    border-color: var(--institucional-green);
+    box-shadow: 0 3px 7px rgba(0, 117, 56, 0.25);
+    transform: translateY(-1px); /* Ligero levantamiento */
+    /* background-color: lighten(var(--institucional-green), 55%); Opcional: fondo sutil */
+  }
+}
+
+.payment-logo-button img {
+  max-height: 90%; /* Ajustar para que el logo use bien el espacio vertical */
+  max-width: 110px; /* Ancho máximo del logo */
+  object-fit: contain;
+  display: block;
+}
+
+/* Footer con total y botón */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color-soft);
+
+  .total-pagar-footer { /* Clase específica para el strong del total */
+    font-size: 1.3rem; /* Más grande el total */
+    color: var(--institucional-green);
+    font-weight: 700;
+  }
+
+  .pagar-button { /* Clase específica para el botón pagar */
+    min-width: 200px; /* Botón más ancho */
+    padding: 0.85rem 1.75rem;
+    font-size: 1rem;
+    font-weight: 500;
+    text-transform: uppercase; /* Texto del botón en mayúsculas */
+  }
+}
+
+/* --- ESTILOS PARA COMPONENTES ANGULAR MATERIAL --- */
+:host ::ng-deep .mat-checkbox-checked.mat-primary .mat-checkbox-background,
+:host ::ng-deep .mat-checkbox-indeterminate.mat-primary .mat-checkbox-background {
+  background-color: var(--institucional-green) !important;
+}
+:host ::ng-deep .mat-checkbox-ripple .mat-ripple-element {
+  background-color: rgba(0, 117, 56, 0.2) !important;
+}
+
+:host ::ng-deep .mat-form-field.mat-focused .mat-form-field-label {
+  color: var(--institucional-green) !important;
+}
+:host ::ng-deep .mat-form-field.mat-focused .mat-form-field-ripple {
+  background-color: var(--institucional-green) !important;
+}
+:host ::ng-deep .mat-form-field.mat-focused .mat-form-field-outline-thick {
+  color: var(--institucional-green) !important;
+}
+
+:host ::ng-deep button[mat-stroked-button][color="primary"] {
+  color: var(--institucional-green);
+  border-color: var(--institucional-green);
+  &:hover {
+    background-color: rgba(0, 117, 56, 0.05);
+  }
+}
+:host ::ng-deep button[mat-flat-button][color="primary"],
+:host ::ng-deep button[mat-raised-button][color="primary"] {
+  background-color: var(--institucional-green);
+  color: var(--text-color-on-primary);
+  &:hover {
+    background-color: var(--institucional-green-darker);
+  }
+}
+
+:host ::ng-deep button[mat-raised-button][color="accent"] {
+  background-color: var(--accent-color);
+  color: var(--text-color-on-accent);
+  &:hover {
+    background-color: var(--accent-color-darker);
+  }
+  &:disabled {
+    background-color: rgba(0, 0, 0, 0.12) !important;
+    color: rgba(0, 0, 0, 0.26) !important;
+  }
+}
+
+
+/* Responsive */
+@media (max-width: 768px) {
+  .payment-container {
+    padding: 1rem;
+  }
+  .payment-card {
+    padding: 1.5rem;
+  }
+  .card-body {
+    flex-direction: column;
+    gap: 1.5rem;
+    .left,
+    .right {
+      width: 100%;
+      min-width: unset;
+    }
+  }
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    img {
+        height: 40px;
+    }
+  }
+
+  .footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.5rem; /* Aumentado el gap */
+
+    .total-pagar-footer { /* Para centrar el texto del total en móvil */
+      text-align: center;
+      display: block; /* Para que el text-align funcione */
+      width: 100%;
+    }
+    .pagar-button {
+      width: 100%; /* Botón de pagar ocupa todo el ancho */
+    }
+  }
+  .medios-pago {
+    justify-content: center; /* Centrar los logos de pago en móvil */
+  }
+}
+
+@media (max-width: 480px) {
+  .payment-card {
+    padding: 1rem;
+  }
+  .card-header img {
+    height: 35px;
+  }
+  .card-body h3 {
+    font-size: 1rem;
+  }
+  .payment-logo-button {
+    min-width: 120px;
+    height: 50px;
+  }
+  .payment-logo-button img {
+    max-width: 90px;
+  }
+  .footer .pagar-button {
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+  }
 }

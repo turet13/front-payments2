@@ -3,26 +3,74 @@
       [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
       [mode]="(isHandset$ | async) ? 'over' : 'side'"
       [opened]="(isHandset$ | async) === false">
-    <mat-toolbar>Menu</mat-toolbar>
+    <mat-toolbar class="sidenav-toolbar">
+      <span>Menú</span>
+    </mat-toolbar>
     <mat-nav-list>
-      <a mat-list-item href="#">Link 1</a>
-      <a mat-list-item href="#">Link 2</a>
-      <a mat-list-item href="#">Link 3</a>
+      <a mat-list-item href="#" class="active-link">Enlace Activo 1</a>
+      <a mat-list-item href="#">Enlace 2</a>
+      <a mat-list-item href="#">Enlace 3</a>
     </mat-nav-list>
   </mat-sidenav>
+
   <mat-sidenav-content>
-    <mat-toolbar color="primary">
-      @if (isHandset$ | async) {
-        <button
-          type="button"
-          aria-label="Toggle sidenav"
-          mat-icon-button
-          (click)="drawer.toggle()">
-          <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-        </button>
-      }
+    <mat-toolbar color="primary" class="main-toolbar">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
       <span>front-payments</span>
     </mat-toolbar>
-    <!-- Add Content Here -->
+
+    <div class="payment-container">
+      <mat-card class="payment-card">
+        <div class="card-header">
+          <img src="assets/img/Erizcafe.jpg" alt="Erizcafe" />
+          <div>RUT: 22.417.856-5 <a href="#" class="rut-change-link">Cambiar</a></div>
+        </div>
+
+        <div class="card-body">
+          <div class="left">
+            <h3>Selecciona tus servicios a pagar</h3>
+            <mat-checkbox [(ngModel)]="deudaHogarSeleccionada" color="primary">Total deuda Hogar <strong>${{ totalDeudaHogar | number:'1.0-0':'es-CL' }}</strong></mat-checkbox>
+            <div class="detalle">Deuda vencida: <small>$0</small></div>
+            <mat-checkbox [(ngModel)]="deudaMovilSeleccionada" color="primary">Total deuda Móvil <strong>${{ totalDeudaMovil | number:'1.0-0':'es-CL' }}</strong></mat-checkbox>
+
+            <mat-form-field appearance="fill" class="email-field">
+              <mat-label>Email</mat-label>
+              <input matInput type="email" placeholder="Ingresa tu email" [(ngModel)]="email" required />
+            </mat-form-field>
+          </div>
+
+          <div class="right">
+            <h3>Selecciona un medio de pago</h3>
+            <div class="medios-pago">
+              <button class="payment-logo-button webpay-button"
+                      [class.selected]="pagoSeleccionado === 'webpay'"
+                      (click)="seleccionarMetodoPago('webpay')"
+                      aria-label="Pagar con Webpay Plus">
+                <img src="https://seeklogo.com/images/W/webpay-plus-logo-9692403993-seeklogo.com.png" alt="Webpay Plus">
+              </button>
+              <button class="payment-logo-button transbank-button"
+                      [class.selected]="pagoSeleccionado === 'transbank'"
+                      (click)="seleccionarMetodoPago('transbank')"
+                      aria-label="Pagar con Transbank">
+                <img src="https://seeklogo.com/images/T/transbank-logo-AF4303BEBB-seeklogo.com.png" alt="Transbank">
+              </button>
+              </div>
+          </div>
+        </div>
+
+        <div class="footer">
+          <span>Total a pagar: <strong class="total-pagar-footer">${{ totalAPagar | number:'1.0-0':'es-CL' }}</strong></span>
+          <button mat-raised-button class="pagar-button" color="accent" [disabled]="!email || !pagoSeleccionado || totalAPagar <= 0" (click)="procederAlPagoFinal()">
+            PAGAR CON {{ pagoSeleccionado ? pagoSeleccionado.toUpperCase() : '' }}
+          </button>
+        </div>
+      </mat-card>
+    </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
